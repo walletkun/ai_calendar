@@ -1,2 +1,2 @@
 # ai_calendar
-A calendar that utilizes ai to personalize your time management
+An calendar that utilizes ai to personalize your time management
