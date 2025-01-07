@@ -9,11 +9,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export async function createEvent(unsafeData: z.infer<typeof eventFormSchema>) {
-    const authResult = auth();
-    console.log("Authentication result: ", authResult);
-
-    const { userId } = authResult;
-
+   const { userId } = await auth();
     if(!userId){
         console.log("No userId found in auth");
         return { error: "Authenticated Required"}
@@ -30,8 +26,11 @@ export async function createEvent(unsafeData: z.infer<typeof eventFormSchema>) {
             ...result.data,
             clerkUserId: userId,
         }).returning();
-        
-        redirect("/events")
+
+        return {
+            success: true,
+            data: event[0]
+        };
     } catch(error){
         console.error("Database error: ", error);
         return {error: "idk tripping probably"}
