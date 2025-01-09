@@ -67,3 +67,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+@keyframes slide-away{
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100%{
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.slide-away{
+  animation: slideAway 0.4s forwards
+}
