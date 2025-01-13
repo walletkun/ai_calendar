@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/drizzle/db";
-import { EventTable } from "@/drizzle/schema";
+import { BookingsTable, EventTable } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
 export async function GET(
@@ -17,13 +17,18 @@ export async function GET(
         const event = await db.query.EventTable.findFirst({
             where: eq(EventTable.id, id),
         })
+        
 
+        
         if (!event){
             return NextResponse.json({success: false, error: "No event found"});
         }
 
-        const bookingsCount = 10; //Replace after creating a booking count parameter
 
+        const bookingsCount = (await db.query.BookingsTable.findMany({
+            where: eq(BookingsTable.eventId, id)
+        })).length;
+        
         return NextResponse.json({
             id: event.id,
             duration: event.durationInMinutes,

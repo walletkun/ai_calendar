@@ -4,7 +4,7 @@ import { eventFormSchema } from "@/schema/events";
 import { z } from "zod";
 import "use-server";
 import { db } from "@/drizzle/db";
-import { EventTable } from "@/drizzle/schema";
+import { BookingsTable, EventTable } from "@/drizzle/schema";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
@@ -26,6 +26,17 @@ export async function createEvent(unsafeData: z.infer<typeof eventFormSchema>) {
             ...result.data,
             clerkUserId: userId,
         }).returning();
+
+        const initialBookings = result.data.bookings;
+
+        if (initialBookings > 0) {
+            const bookings = Array.from({ length: initialBookings}).map(() => ({
+                eventId: event[0].id,
+                clerkUserId: userId
+            }));
+
+        await db.insert(BookingsTable).values(bookings);
+        }
 
         return {
             success: true,

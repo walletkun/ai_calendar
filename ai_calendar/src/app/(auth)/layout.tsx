@@ -2,8 +2,9 @@ import React, { ReactNode } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
-  const { userId } = auth();
+
+export default async function AuthLayout({ children }: { children: ReactNode }) {
+  const { userId } = await auth();
   if (userId != null) {
     redirect("/");
   }

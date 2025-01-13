@@ -27,14 +27,20 @@ export default function EventForm() {
       description: "",
       isActive: true,
       durationInMinutes: 30,
+      bookings: 0,
     },
   });
 
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    const result = await createEvent(values);
-    if(result?.error){
-        console.error(result.error);
-        return;
+    try{
+        const result = await createEvent(values);
+        if(result?.error){
+            console.error(result.error);
+            return;
+        }
+    }
+    catch(error){
+      console.error("Error: ", error)
     }
   }
   return (
@@ -81,6 +87,18 @@ export default function EventForm() {
                 <Textarea className="resize-none h-32" {...field}/>
               </FormControl>
               <FormDescription>Optional Description for the event</FormDescription>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="bookings"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>How many are attending</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
             </FormItem>
           )}
         />

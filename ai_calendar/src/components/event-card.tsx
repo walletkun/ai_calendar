@@ -51,6 +51,8 @@ export function EventCard({ id, title, description }: EventCardProps) {
     }
   };
 
+  
+
   //Fetch event detail on mount
   useEffect(() => {
     const fetchEventDetail = async () => {
@@ -114,7 +116,7 @@ export function EventCard({ id, title, description }: EventCardProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users className="size-4 text-gray-400" />
-            <span className="text-sm text-gray-600">{bookings ? `${bookings} Attending` : "No bookings"}</span>
+            <span className="text-sm text-gray-600">{bookings ? `${bookings} Booked` : "No bookings"}</span>
           </div>
           <span
             className={`px-2 py-1 text-xs rounded-full ${

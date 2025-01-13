@@ -64,12 +64,25 @@ export const ScheduleAvailabilityTable = pgTable(
   })
 );
 
+export const BookingsTable = pgTable("bookings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  eventId: uuid("eventId")
+    .notNull()
+    .references(() => EventTable.id, { onDelete: "cascade" }),
+  clerkUserId: text("clerkUserId").notNull(), // User who booked
+  bookedAt: timestamp("bookedAt").notNull().defaultNow(),
+});
+
 export const scheduleAvailabilitiesRelations = relations(
   ScheduleAvailabilityTable,
   ({ one }) => ({
     schedule: one(ScheduledTable, {
-        fields: [ScheduleAvailabilityTable.scheduleId],
-        references: [ScheduledTable.id],
-    })
+      fields: [ScheduleAvailabilityTable.scheduleId],
+      references: [ScheduledTable.id],
+    }),
   })
 );
+
+export const eventRelations = relations(EventTable, ({ many }) => ({
+  bookings: many(BookingsTable),
+}));
