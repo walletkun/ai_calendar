@@ -18,8 +18,10 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Switch } from "../ui/switch";
 import { createEvent } from "@/server/actions/events";
+import { useRouter } from "next/navigation";
 
 export default function EventForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
@@ -38,11 +40,16 @@ export default function EventForm() {
             console.error(result.error);
             return;
         }
+        
+        if (result){
+          router.push("/events");
+        }
     }
     catch(error){
       console.error("Error: ", error)
     }
   }
+
   return (
     <Form {...form}>
       <form
