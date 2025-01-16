@@ -10,7 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
 import Link from "next/link";
@@ -34,19 +34,16 @@ export default function EventForm() {
   });
 
   async function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    try{
-        const result = await createEvent(values);
-        if(result?.error){
-            console.error(result.error);
-            return;
-        }
-        
-        if (result){
-          router.push("/events");
-        }
-    }
-    catch(error){
-      console.error("Error: ", error)
+    try {
+      const result = await createEvent(values);
+      if (result?.error) {
+        console.error(result.error);
+        return;
+      } else {
+        router.push("/events");
+      }
+    } catch (error) {
+      console.error("Error: ", error);
     }
   }
 
@@ -66,7 +63,7 @@ export default function EventForm() {
                 <Input {...field} />
               </FormControl>
               <FormDescription>The name user will see this</FormDescription>
-              <FormMessage/>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -91,9 +88,11 @@ export default function EventForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea className="resize-none h-32" {...field}/>
+                <Textarea className="resize-none h-32" {...field} />
               </FormControl>
-              <FormDescription>Optional Description for the event</FormDescription>
+              <FormDescription>
+                Optional Description for the event
+              </FormDescription>
             </FormItem>
           )}
         />
@@ -114,16 +113,18 @@ export default function EventForm() {
           name="isActive"
           render={({ field }) => (
             <FormItem>
-                <div className="flex items-center gap-2">
-              <FormControl>
-                <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormLabel>Active</FormLabel>
+              <div className="flex items-center gap-2">
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel>Active</FormLabel>
               </div>
-              <FormDescription>Inactive events will not be visible for users to book</FormDescription>
+              <FormDescription>
+                Inactive events will not be visible for users to book
+              </FormDescription>
             </FormItem>
           )}
         />

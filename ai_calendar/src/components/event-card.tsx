@@ -14,6 +14,7 @@ import {
   MoreVertical,
   Trash,
   Users,
+  PencilIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -33,8 +34,10 @@ export function EventCard({ id, title, description }: EventCardProps) {
   const [isDeleted, setIsDeleted] = useState(false);
   const [duration, setDuration] = useState<number | null>(null);
   const [bookings, setBookings] = useState<number | null>(null);
+  const [edit, setEdit] = useState<boolean>(false);
   const [status, setStatus] = useState<string>("");
 
+  // Deleting events
   const handleDelete = async () => {
     try {
       setIsDeleted(true);
@@ -51,7 +54,24 @@ export function EventCard({ id, title, description }: EventCardProps) {
     }
   };
 
-  
+  // Editing Events
+  const handleEdit = async () => {
+    try {
+      setEdit(true);
+
+      const response = await fetch(`/api/events/${id}/details`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        console.log("Error: ", response.json());
+      }
+
+      console.log("Response: ", response.json());
+    } catch (error) {
+      console.log("Error fetching details: ", error);
+    }
+  };
 
   //Fetch event detail on mount
   useEffect(() => {
@@ -71,6 +91,7 @@ export function EventCard({ id, title, description }: EventCardProps) {
 
     fetchEventDetail();
   }, [id]);
+
 
   return (
     <Card
@@ -96,6 +117,10 @@ export function EventCard({ id, title, description }: EventCardProps) {
                 <LinkIcon className="mr-2 size-4" />
                 Copy Link
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleEdit()}>
+                <PencilIcon className="mr-2 size-4" />
+                Edit
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => handleDelete()}
                 className="text-red-600"
@@ -108,15 +133,21 @@ export function EventCard({ id, title, description }: EventCardProps) {
         </div>
         <div className="flex items-center gap-2 mt-2">
           <Clock className="size-4 text-gray-400" />
-          <span className="text-sm text-gray-500">{duration ? `${duration} minutes` : "Loading..."}</span>
+          <span className="text-sm text-gray-500">
+            {duration ? `${duration} minutes` : "Loading..."}
+          </span>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600 text-sm mb-4">{description ? `${description}` : "Loading..."}</p>
+        <p className="text-gray-600 text-sm mb-4">
+          {description ? `${description}` : "Loading..."}
+        </p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users className="size-4 text-gray-400" />
-            <span className="text-sm text-gray-600">{bookings ? `${bookings} Booked` : "No bookings"}</span>
+            <span className="text-sm text-gray-600">
+              {bookings ? `${bookings} Booked` : "No bookings"}
+            </span>
           </div>
           <span
             className={`px-2 py-1 text-xs rounded-full ${

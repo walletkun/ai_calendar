@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { BookingsTable, EventTable } from "@/drizzle/schema";
 import { and, eq, like, desc, gte } from "drizzle-orm";
 
+
 interface PageProps {
   searchParams: { [key: string]: string | undefined };
 }
