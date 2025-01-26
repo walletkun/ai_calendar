@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Clock,
-  Link as LinkIcon,
+  LinkIcon,
   MoreVertical,
   Trash,
   Users,
@@ -92,7 +92,6 @@ export function EventCard({ id, title, description }: EventCardProps) {
     fetchEventDetail();
   }, [id]);
 
-
   return (
     <Card
       className={`group hover:shadow-lg transition-shadow ${
@@ -117,9 +116,11 @@ export function EventCard({ id, title, description }: EventCardProps) {
                 <LinkIcon className="mr-2 size-4" />
                 Copy Link
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleEdit()}>
-                <PencilIcon className="mr-2 size-4" />
-                Edit
+              <DropdownMenuItem asChild>
+                <Link href={`/events/${id}/edit`}>
+                  <PencilIcon className="mr-2 size-4" />
+                  Edit
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => handleDelete()}

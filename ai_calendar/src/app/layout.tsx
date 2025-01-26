@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import LoadScreen from "@/components/loading/LoadScreen";
 import {
   ClerkProvider,
   SignInButton,
@@ -32,6 +33,7 @@ export default function RootLayout({
             inter.variable
           )}
         >
+          
           {children}
         </body>
       </html>
